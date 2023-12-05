@@ -27,12 +27,20 @@ class PatientModelAssembler: RepresentationModelAssemblerSupport<Patient,
             .withRel("user role"))
 
         patientRepresentation.id = entity.id
-        patientRepresentation.email = entity.email
-        patientRepresentation.employeeNumber = entity.employeeNumber
-        patientRepresentation.loginPassword = entity.loginPassword
-
         patientRepresentation.firstName = entity.firstName
         patientRepresentation.lastName = entity.lastName
+        patientRepresentation.dob = entity.dob
+        patientRepresentation.gender = entity.gender
+        patientRepresentation.maritalStatus = entity.maritalStatus
+        patientRepresentation.externalDoctor = entity.externalDoctor
+        patientRepresentation.nokFName = entity.nokFName
+        patientRepresentation.nokLName = entity.nokLName
+        patientRepresentation.nokRelation = entity.nokRelation
+        patientRepresentation.nokPhoneNumber = entity.nokPhoneNumber
+        patientRepresentation.email = entity.email 
+
+
+      
         return patientRepresentation
     }
 

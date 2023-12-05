@@ -7,21 +7,21 @@ import java.util.*
 class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var id: UUID = UUID.fromString("00000000-0000-0000-0000-000000000000")
+    var id: Long = 0
     var insuranceNumber: Number = 0
     var firstName: String = ""
     var lastName: String = ""
     var address: Address = Address()
     var dob: Date = Date()
     var gender: String = ""
-    val maritalStatus: String = ""
-    val externalDoctor: String = ""
-    val nokFName: String = ""
-    val nokLName: String = ""
-    val nokRelation: String = ""
-    val nokAddress: Address = Address()
-    val nokPhoneNumber: String = ""
-    val email: String = ""
+    var maritalStatus: String = ""
+    var externalDoctor: String = ""
+    var nokFName: String = ""
+    var nokLName: String = ""
+    var nokRelation: String = ""
+    var nokAddress: Address = Address()
+    var nokPhoneNumber: String = ""
+    var email: String = ""
 
 
 

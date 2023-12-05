@@ -14,10 +14,10 @@ import seg3x02.hmstest.user.repository.UserAccountRepository
 import seg3x02.hmstest.user.repository.UserRoleRepository
 
 import seg3x02.hmstest.patient.assemblers.PatientModelAssembler
-import seg3x02.hmstest.patient.assemblers.AddressModelAssembler
+// import seg3x02.hmstest.patient.assemblers.AddressModelAssembler
 import seg3x02.hmstest.patient.entities.Patient
 import seg3x02.hmstest.patient.entities.Address
-import seg3x02.hmstest.patient.repository.AddressRepository
+// import seg3x02.hmstest.patient.repository.AddressRepository
 import seg3x02.hmstest.patient.repository.PatientRepository
 
 import seg3x02.hmstest.user.representation.*
@@ -131,6 +131,23 @@ class ApiController(val userAccountRepository: UserAccountRepository,
                 .buildAndExpand(newUser.id)
                 .toUri()
             ResponseEntity.created(location).body(userAccountAssembler.toModel(newUser))
+        } catch (e: IllegalArgumentException) {
+            ResponseEntity.badRequest().build()
+        }
+    }
+
+    @Operation(summary = "Add a new patient")
+    @PostMapping("/addpatient")
+    fun addPatient(@RequestBody patient: Patient): ResponseEntity<Any> {
+        return try {
+            val newPatient = this.patientRepository.save(patient)
+            val location: URI = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newPatient.id)
+                .toUri()
+            ResponseEntity.created(location).body(patientAssembler.toModel(newPatient))
+
         } catch (e: IllegalArgumentException) {
             ResponseEntity.badRequest().build()
         }
