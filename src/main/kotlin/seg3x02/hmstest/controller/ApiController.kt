@@ -14,10 +14,12 @@ import seg3x02.hmstest.user.repository.UserAccountRepository
 import seg3x02.hmstest.user.repository.UserRoleRepository
 
 import seg3x02.hmstest.patient.assemblers.PatientModelAssembler
-// import seg3x02.hmstest.patient.assemblers.AddressModelAssembler
 import seg3x02.hmstest.patient.entities.Patient
-// import seg3x02.hmstest.patient.repository.AddressRepository
 import seg3x02.hmstest.patient.repository.PatientRepository
+
+import seg3x02.hmstest.division.assemblers.DivisionModelAssembler
+import seg3x02.hmstest.division.entities.Division
+import seg3x02.hmstest.division.repository.DivisionRepository
 
 import seg3x02.hmstest.user.representation.*
 import seg3x02.hmstest.patient.representation.*
