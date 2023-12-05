@@ -11,7 +11,7 @@ class Patient {
     var insuranceNumber: Number = 0
     var firstName: String = ""
     var lastName: String = ""
-    var address: Address = Address()
+    var address: String = ""
     var dob: Date = Date()
     var gender: String = ""
     var maritalStatus: String = ""
@@ -19,7 +19,7 @@ class Patient {
     var nokFName: String = ""
     var nokLName: String = ""
     var nokRelation: String = ""
-    var nokAddress: Address = Address()
+    var nokAddress: String = ""
     var nokPhoneNumber: String = ""
     var email: String = ""
 

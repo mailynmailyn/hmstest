@@ -7,9 +7,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
 import org.springframework.stereotype.Component
 import seg3x02.hmstest.controller.ApiController
 import seg3x02.hmstest.patient.entities.Patient
-import seg3x02.hmstest.patient.entities.Address
 import seg3x02.hmstest.patient.representation.PatientRepresentation
-import seg3x02.hmstest.patient.representation.AddressRepresentation
 import java.util.*
 
 @Component

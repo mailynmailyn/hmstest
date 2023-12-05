@@ -16,7 +16,6 @@ import seg3x02.hmstest.user.repository.UserRoleRepository
 import seg3x02.hmstest.patient.assemblers.PatientModelAssembler
 // import seg3x02.hmstest.patient.assemblers.AddressModelAssembler
 import seg3x02.hmstest.patient.entities.Patient
-import seg3x02.hmstest.patient.entities.Address
 // import seg3x02.hmstest.patient.repository.AddressRepository
 import seg3x02.hmstest.patient.repository.PatientRepository
 
@@ -64,6 +63,20 @@ class ApiController(val userAccountRepository: UserAccountRepository,
             userAccountAssembler.toCollectionModel(authors),
             HttpStatus.OK)
     }
+
+    @Operation(summary = "Get all patients by firstName and lastName")
+    @GetMapping("/patientsname", params = ["firstName", "lastName"])
+    fun getPatientsByName(@RequestParam("firstName") firstName: String,
+                         @RequestParam("lastName") lastName: String):
+            ResponseEntity<CollectionModel<PatientRepresentation>> {
+        val authors = patientRepository.findPatientsByName(firstName, lastName)
+        return ResponseEntity(
+            patientAssembler.toCollectionModel(authors),
+            HttpStatus.OK)
+    }
+
+
+
 
     @Operation(summary = "Get a user by id")
     @GetMapping("/useraccounts/{id}")
