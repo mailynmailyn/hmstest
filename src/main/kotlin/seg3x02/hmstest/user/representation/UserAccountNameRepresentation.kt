@@ -1,4 +1,4 @@
-package seg3x02.hmstest.representation
+package seg3x02.hmstest.user.representation
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import org.springframework.hateoas.RepresentationModel

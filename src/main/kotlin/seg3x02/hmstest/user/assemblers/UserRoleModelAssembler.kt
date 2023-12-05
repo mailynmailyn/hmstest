@@ -1,11 +1,11 @@
-package seg3x02.hmstest.assemblers
+package seg3x02.hmstest.user.assemblers
 
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import org.springframework.stereotype.Component
 import seg3x02.hmstest.controller.ApiController
-import seg3x02.hmstest.entities.UserRole
-import seg3x02.hmstest.representation.UserRoleRepresentation
+import seg3x02.hmstest.user.entities.UserRole
+import seg3x02.hmstest.user.representation.UserRoleRepresentation
 
 @Component
 class UserRoleModelAssembler : RepresentationModelAssemblerSupport<UserRole,

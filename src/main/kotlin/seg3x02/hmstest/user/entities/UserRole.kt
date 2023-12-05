@@ -1,4 +1,4 @@
-package seg3x02.hmstest.entities
+package seg3x02.hmstest.user.entities
 
 import jakarta.persistence.*
 
