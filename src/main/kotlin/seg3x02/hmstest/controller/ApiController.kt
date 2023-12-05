@@ -6,13 +6,13 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
-import seg3x02.hmstest.assemblers.UserAccountModelAssembler
-import seg3x02.hmstest.assemblers.UserRoleModelAssembler
-import seg3x02.hmstest.entities.UserAccount
-import seg3x02.hmstest.entities.UserRole
-import seg3x02.hmstest.repository.UserAccountRepository
-import seg3x02.hmstest.repository.UserRoleRepository
-import seg3x02.hmstest.representation.*
+import seg3x02.hmstest.user.assemblers.UserAccountModelAssembler
+import seg3x02.hmstest.user.assemblers.UserRoleModelAssembler
+import seg3x02.hmstest.user.entities.UserAccount
+import seg3x02.hmstest.user.entities.UserRole
+import seg3x02.hmstest.user.repository.UserAccountRepository
+import seg3x02.hmstest.user.repository.UserRoleRepository
+import seg3x02.hmstest.user.representation.*
 import java.net.URI
 
 @RestController

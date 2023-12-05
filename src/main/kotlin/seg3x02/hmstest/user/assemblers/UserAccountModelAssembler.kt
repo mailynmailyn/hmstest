@@ -1,4 +1,4 @@
-package seg3x02.hmstest.assemblers
+package seg3x02.hmstest.user.assemblers
 
 import org.springframework.hateoas.CollectionModel
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport
@@ -6,10 +6,10 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo
 import org.springframework.stereotype.Component
 import seg3x02.hmstest.controller.ApiController
-import seg3x02.hmstest.entities.UserAccount
-import seg3x02.hmstest.entities.UserRole
-import seg3x02.hmstest.representation.UserRoleRepresentation
-import seg3x02.hmstest.representation.UserAccountRepresentation
+import seg3x02.hmstest.user.entities.UserAccount
+import seg3x02.hmstest.user.entities.UserRole
+import seg3x02.hmstest.user.representation.UserRoleRepresentation
+import seg3x02.hmstest.user.representation.UserAccountRepresentation
 import java.util.*
 
 @Component
