@@ -12,7 +12,16 @@ import seg3x02.hmstest.user.entities.UserAccount
 import seg3x02.hmstest.user.entities.UserRole
 import seg3x02.hmstest.user.repository.UserAccountRepository
 import seg3x02.hmstest.user.repository.UserRoleRepository
+
+import seg3x02.hmstest.patient.assemblers.PatientModelAssembler
+import seg3x02.hmstest.patient.assemblers.AddressModelAssembler
+import seg3x02.hmstest.patient.entities.Patient
+import seg3x02.hmstest.patient.entities.Address
+import seg3x02.hmstest.patient.repository.AddressRepository
+import seg3x02.hmstest.patient.repository.PatientRepository
+
 import seg3x02.hmstest.user.representation.*
+import seg3x02.hmstest.patient.representation.*
 import java.net.URI
 
 @RestController
@@ -22,6 +31,8 @@ class ApiController(val userAccountRepository: UserAccountRepository,
                     val roleRepository: UserRoleRepository,
                     val userAccountAssembler: UserAccountModelAssembler,
                     val roleAssembler: UserRoleModelAssembler,
+                    val patientRepository: PatientRepository,
+                    val patientAssembler: PatientModelAssembler
 ) {
 
 
@@ -31,6 +42,15 @@ class ApiController(val userAccountRepository: UserAccountRepository,
         val users = userAccountRepository.findAll()
         return ResponseEntity(
             userAccountAssembler.toCollectionModel(users),
+            HttpStatus.OK)
+    }
+
+    @Operation(summary = "Get all patients")
+    @GetMapping("/patients")
+    fun allPatients(): ResponseEntity<CollectionModel<PatientRepresentation>> {
+        val patients = patientRepository.findAll()
+        return ResponseEntity(
+            patientAssembler.toCollectionModel(patients),
             HttpStatus.OK)
     }
 
@@ -51,6 +71,15 @@ class ApiController(val userAccountRepository: UserAccountRepository,
         return userAccountRepository.findById(id)
             .map { entity: UserAccount -> userAccountAssembler.toModel(entity) }
             .map { body: UserAccountRepresentation -> ResponseEntity.ok(body) }
+            .orElse(ResponseEntity.notFound().build())
+    }
+
+    @Operation(summary = "Get a patient by id")
+    @GetMapping("/patients/{id}")
+    fun getPatientById(@PathVariable("id") id: Long): ResponseEntity<PatientRepresentation> {
+        return patientRepository.findById(id)
+            .map { entity: Patient -> patientAssembler.toModel(entity) }
+            .map { body: PatientRepresentation -> ResponseEntity.ok(body) }
             .orElse(ResponseEntity.notFound().build())
     }
 
