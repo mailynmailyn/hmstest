@@ -27,6 +27,9 @@ class UserAccountModelAssembler: RepresentationModelAssemblerSupport<UserAccount
             .withRel("user role"))
 
         useraccountRepresentation.id = entity.id
+        useraccountRepresentation.email = entity.email
+        useraccountRepresentation.employeeNumber = entity.employeeNumber
+        useraccountRepresentation.loginPassword = entity.loginPassword
 
         useraccountRepresentation.firstName = entity.firstName
         useraccountRepresentation.lastName = entity.lastName

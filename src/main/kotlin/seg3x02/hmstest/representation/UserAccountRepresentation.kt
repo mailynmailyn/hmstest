@@ -8,10 +8,10 @@ import org.springframework.hateoas.server.core.Relation
 @JsonInclude(JsonInclude.Include.NON_NULL)
 class UserAccountRepresentation: RepresentationModel<UserAccountRepresentation>() {
     var id: Long = 0
-    val employeeNumber: Number = 0
+    var employeeNumber: Number = 0
     var loginPassword: String = ""
     var firstName: String = ""
     var lastName: String = ""
-    val email: String = ""
+    var email: String = ""
     val role: UserRoleRepresentation = UserRoleRepresentation()
 }

@@ -11,7 +11,7 @@ class UserAccount {
     var loginPassword: String = ""
     var firstName: String = ""
     var lastName: String = ""
-    val email: String = ""
+    var email: String = ""
     
 
     @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])

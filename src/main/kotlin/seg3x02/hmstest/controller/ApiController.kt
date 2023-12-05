@@ -17,7 +17,7 @@ import java.net.URI
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:4200"])
-@RequestMapping("books-api", produces = ["application/hal+json"])
+@RequestMapping("hms-test", produces = ["application/hal+json"])
 class ApiController(val userAccountRepository: UserAccountRepository,
                     val roleRepository: UserRoleRepository,
                     val userAccountAssembler: UserAccountModelAssembler,
@@ -35,7 +35,7 @@ class ApiController(val userAccountRepository: UserAccountRepository,
     }
 
     @Operation(summary = "Get all users by firstName and lastName")
-    @GetMapping("/authors", params = ["firstName", "lastName"])
+    @GetMapping("/useraccountsname", params = ["firstName", "lastName"])
     fun getUserAccountsByName(@RequestParam("firstName") firstName: String,
                          @RequestParam("lastName") lastName: String):
             ResponseEntity<CollectionModel<UserAccountRepresentation>> {
@@ -92,8 +92,8 @@ class ApiController(val userAccountRepository: UserAccountRepository,
 
     
     @Operation(summary = "Add a new user")
-    @PostMapping("/books")
-    fun addBook(@RequestBody user: UserAccount): ResponseEntity<Any> {
+    @PostMapping("/adduser")
+    fun addUser(@RequestBody user: UserAccount): ResponseEntity<Any> {
         return try {
             val newUser = this.userAccountRepository.save(user)
             val location: URI = ServletUriComponentsBuilder
