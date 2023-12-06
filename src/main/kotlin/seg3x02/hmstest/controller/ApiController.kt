@@ -23,6 +23,7 @@ import seg3x02.hmstest.division.repository.DivisionRepository
 
 import seg3x02.hmstest.user.representation.*
 import seg3x02.hmstest.patient.representation.*
+import seg3x02.hmstest.division.representation.*
 import java.net.URI
 
 @RestController
@@ -33,7 +34,9 @@ class ApiController(val userAccountRepository: UserAccountRepository,
                     val userAccountAssembler: UserAccountModelAssembler,
                     val roleAssembler: UserRoleModelAssembler,
                     val patientRepository: PatientRepository,
-                    val patientAssembler: PatientModelAssembler
+                    val patientAssembler: PatientModelAssembler,
+                    val divRepository: DivisionRepository,
+                    val divAssembler: DivisionModelAssembler
 ) {
 
 
@@ -52,6 +55,15 @@ class ApiController(val userAccountRepository: UserAccountRepository,
         val patients = patientRepository.findAll()
         return ResponseEntity(
             patientAssembler.toCollectionModel(patients),
+            HttpStatus.OK)
+    }
+
+    @Operation(summary = "Get all division")
+    @GetMapping("/division")
+    fun allDivisions(): ResponseEntity<CollectionModel<DivisionRepresentation>> {
+        val divs = divRepository.findAll()
+        return ResponseEntity(
+            divAssembler.toCollectionModel(divs),
             HttpStatus.OK)
     }
 
@@ -77,6 +89,16 @@ class ApiController(val userAccountRepository: UserAccountRepository,
             HttpStatus.OK)
     }
 
+    @Operation(summary = "Get all available divisions")
+    @GetMapping("/availablediv")
+    fun getAvailableDivs():
+            ResponseEntity<CollectionModel<DivisionRepresentation>> {
+        val divs = divRepository.findAvailableDivisions()
+        return ResponseEntity(
+            divAssembler.toCollectionModel(divs),
+            HttpStatus.OK)
+    }
+
 
 
 
@@ -95,6 +117,15 @@ class ApiController(val userAccountRepository: UserAccountRepository,
         return patientRepository.findById(id)
             .map { entity: Patient -> patientAssembler.toModel(entity) }
             .map { body: PatientRepresentation -> ResponseEntity.ok(body) }
+            .orElse(ResponseEntity.notFound().build())
+    }
+
+    @Operation(summary = "Get a division by id")
+    @GetMapping("/division/{id}")
+    fun getDivisionById(@PathVariable("id") id: Long): ResponseEntity<DivisionRepresentation> {
+        return divRepository.findById(id)
+            .map { entity: Division -> divAssembler.toModel(entity) }
+            .map { body: DivisionRepresentation -> ResponseEntity.ok(body) }
             .orElse(ResponseEntity.notFound().build())
     }
 
@@ -162,6 +193,23 @@ class ApiController(val userAccountRepository: UserAccountRepository,
                 .buildAndExpand(newPatient.id)
                 .toUri()
             ResponseEntity.created(location).body(patientAssembler.toModel(newPatient))
+
+        } catch (e: IllegalArgumentException) {
+            ResponseEntity.badRequest().build()
+        }
+    }
+
+    @Operation(summary = "Add a new division")
+    @PostMapping("/adddivision")
+    fun addDivision(@RequestBody div: Division): ResponseEntity<Any> {
+        return try {
+            val newDivision = this.divRepository.save(div)
+            val location: URI = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newDivision.id)
+                .toUri()
+            ResponseEntity.created(location).body(divAssembler.toModel(newDivision))
 
         } catch (e: IllegalArgumentException) {
             ResponseEntity.badRequest().build()

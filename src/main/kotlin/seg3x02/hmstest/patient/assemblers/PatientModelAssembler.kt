@@ -19,10 +19,6 @@ class PatientModelAssembler: RepresentationModelAssemblerSupport<Patient,
             WebMvcLinkBuilder.methodOn(ApiController::class.java)
                 .getPatientById(entity.id))
             .withSelfRel())
-        patientRepresentation.add(linkTo(
-            WebMvcLinkBuilder.methodOn(ApiController::class.java)
-                .getPatientById(entity.id))
-            .withRel("user role"))
 
         patientRepresentation.id = entity.id
         patientRepresentation.firstName = entity.firstName
