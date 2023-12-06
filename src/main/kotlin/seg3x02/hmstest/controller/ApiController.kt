@@ -12,7 +12,18 @@ import seg3x02.hmstest.user.entities.UserAccount
 import seg3x02.hmstest.user.entities.UserRole
 import seg3x02.hmstest.user.repository.UserAccountRepository
 import seg3x02.hmstest.user.repository.UserRoleRepository
+
+import seg3x02.hmstest.patient.assemblers.PatientModelAssembler
+import seg3x02.hmstest.patient.entities.Patient
+import seg3x02.hmstest.patient.repository.PatientRepository
+
+import seg3x02.hmstest.division.assemblers.DivisionModelAssembler
+import seg3x02.hmstest.division.entities.Division
+import seg3x02.hmstest.division.repository.DivisionRepository
+
 import seg3x02.hmstest.user.representation.*
+import seg3x02.hmstest.patient.representation.*
+import seg3x02.hmstest.division.representation.*
 import java.net.URI
 
 @RestController
@@ -22,6 +33,10 @@ class ApiController(val userAccountRepository: UserAccountRepository,
                     val roleRepository: UserRoleRepository,
                     val userAccountAssembler: UserAccountModelAssembler,
                     val roleAssembler: UserRoleModelAssembler,
+                    val patientRepository: PatientRepository,
+                    val patientAssembler: PatientModelAssembler,
+                    val divRepository: DivisionRepository,
+                    val divAssembler: DivisionModelAssembler
 ) {
 
 
@@ -31,6 +46,24 @@ class ApiController(val userAccountRepository: UserAccountRepository,
         val users = userAccountRepository.findAll()
         return ResponseEntity(
             userAccountAssembler.toCollectionModel(users),
+            HttpStatus.OK)
+    }
+
+    @Operation(summary = "Get all patients")
+    @GetMapping("/patients")
+    fun allPatients(): ResponseEntity<CollectionModel<PatientRepresentation>> {
+        val patients = patientRepository.findAll()
+        return ResponseEntity(
+            patientAssembler.toCollectionModel(patients),
+            HttpStatus.OK)
+    }
+
+    @Operation(summary = "Get all division")
+    @GetMapping("/division")
+    fun allDivisions(): ResponseEntity<CollectionModel<DivisionRepresentation>> {
+        val divs = divRepository.findAll()
+        return ResponseEntity(
+            divAssembler.toCollectionModel(divs),
             HttpStatus.OK)
     }
 
@@ -45,12 +78,54 @@ class ApiController(val userAccountRepository: UserAccountRepository,
             HttpStatus.OK)
     }
 
+    @Operation(summary = "Get all patients by firstName and lastName")
+    @GetMapping("/patientsname", params = ["firstName", "lastName"])
+    fun getPatientsByName(@RequestParam("firstName") firstName: String,
+                         @RequestParam("lastName") lastName: String):
+            ResponseEntity<CollectionModel<PatientRepresentation>> {
+        val authors = patientRepository.findPatientsByName(firstName, lastName)
+        return ResponseEntity(
+            patientAssembler.toCollectionModel(authors),
+            HttpStatus.OK)
+    }
+
+    @Operation(summary = "Get all available divisions")
+    @GetMapping("/availablediv")
+    fun getAvailableDivs():
+            ResponseEntity<CollectionModel<DivisionRepresentation>> {
+        val divs = divRepository.findAvailableDivisions()
+        return ResponseEntity(
+            divAssembler.toCollectionModel(divs),
+            HttpStatus.OK)
+    }
+
+
+
+
     @Operation(summary = "Get a user by id")
     @GetMapping("/useraccounts/{id}")
     fun getUserAccountById(@PathVariable("id") id: Long): ResponseEntity<UserAccountRepresentation> {
         return userAccountRepository.findById(id)
             .map { entity: UserAccount -> userAccountAssembler.toModel(entity) }
             .map { body: UserAccountRepresentation -> ResponseEntity.ok(body) }
+            .orElse(ResponseEntity.notFound().build())
+    }
+
+    @Operation(summary = "Get a patient by id")
+    @GetMapping("/patients/{id}")
+    fun getPatientById(@PathVariable("id") id: Long): ResponseEntity<PatientRepresentation> {
+        return patientRepository.findById(id)
+            .map { entity: Patient -> patientAssembler.toModel(entity) }
+            .map { body: PatientRepresentation -> ResponseEntity.ok(body) }
+            .orElse(ResponseEntity.notFound().build())
+    }
+
+    @Operation(summary = "Get a division by id")
+    @GetMapping("/division/{id}")
+    fun getDivisionById(@PathVariable("id") id: Long): ResponseEntity<DivisionRepresentation> {
+        return divRepository.findById(id)
+            .map { entity: Division -> divAssembler.toModel(entity) }
+            .map { body: DivisionRepresentation -> ResponseEntity.ok(body) }
             .orElse(ResponseEntity.notFound().build())
     }
 
@@ -102,6 +177,40 @@ class ApiController(val userAccountRepository: UserAccountRepository,
                 .buildAndExpand(newUser.id)
                 .toUri()
             ResponseEntity.created(location).body(userAccountAssembler.toModel(newUser))
+        } catch (e: IllegalArgumentException) {
+            ResponseEntity.badRequest().build()
+        }
+    }
+
+    @Operation(summary = "Add a new patient")
+    @PostMapping("/addpatient")
+    fun addPatient(@RequestBody patient: Patient): ResponseEntity<Any> {
+        return try {
+            val newPatient = this.patientRepository.save(patient)
+            val location: URI = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newPatient.id)
+                .toUri()
+            ResponseEntity.created(location).body(patientAssembler.toModel(newPatient))
+
+        } catch (e: IllegalArgumentException) {
+            ResponseEntity.badRequest().build()
+        }
+    }
+
+    @Operation(summary = "Add a new division")
+    @PostMapping("/adddivision")
+    fun addDivision(@RequestBody div: Division): ResponseEntity<Any> {
+        return try {
+            val newDivision = this.divRepository.save(div)
+            val location: URI = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(newDivision.id)
+                .toUri()
+            ResponseEntity.created(location).body(divAssembler.toModel(newDivision))
+
         } catch (e: IllegalArgumentException) {
             ResponseEntity.badRequest().build()
         }
